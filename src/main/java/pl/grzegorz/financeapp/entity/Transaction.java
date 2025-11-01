@@ -12,6 +12,7 @@ public class Transaction {
     private BigDecimal amount;
     private String description;
     private LocalDate date;
+
     @ManyToOne
     private Category category;
     @ManyToOne
