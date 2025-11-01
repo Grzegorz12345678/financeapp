@@ -7,15 +7,18 @@ import java.time.LocalDate;
 
 @Entity
 public class Transaction {
-    @Id @GeneratedValue
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private BigDecimal amount;
     private String description;
     private LocalDate date;
 
     @ManyToOne
+    @JoinColumn(name = "category_id")
     private Category category;
     @ManyToOne
+    @JoinColumn(name = "user_id")
     private User user;
 }
 
