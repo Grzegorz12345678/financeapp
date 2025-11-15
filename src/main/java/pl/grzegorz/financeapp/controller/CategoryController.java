@@ -1,7 +1,9 @@
 package pl.grzegorz.financeapp.controller;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import pl.grzegorz.financeapp.dto.CategoryRequest;
 import pl.grzegorz.financeapp.entity.Category;
 import pl.grzegorz.financeapp.service.CategoryService;
 
@@ -30,19 +32,15 @@ public class CategoryController {
     }
 
     @PostMapping
-    public Category createCategory(@RequestBody Category category) {
-        return categoryService.saveCategory(category);
+    public ResponseEntity<Category> createCategory(@RequestBody CategoryRequest request) {
+        Category created = categoryService.saveCategory(request);
+        return ResponseEntity.status(HttpStatus.CREATED).body(created);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Category> updateCategory(@PathVariable Long id, @RequestBody Category categoryDetails) {
-        return categoryService.getCategoryById(id)
-                .map(category -> {
-                    category.setName(categoryDetails.getName());
-                    category.setType(categoryDetails.getType());
-                    category.setUser(categoryDetails.getUser());
-                    return ResponseEntity.ok(categoryService.saveCategory(category));
-                })
+    public ResponseEntity<Category> updateCategory(@PathVariable Long id, @RequestBody CategoryRequest request) {
+        return categoryService.updateCategory(id, request)
+                .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
 
@@ -52,3 +50,4 @@ public class CategoryController {
         return ResponseEntity.noContent().build();
     }
 }
+
