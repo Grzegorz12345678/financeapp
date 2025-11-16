@@ -1,6 +1,8 @@
 package pl.grzegorz.financeapp.service;
 
 import org.springframework.stereotype.Service;
+import pl.grzegorz.financeapp.dto.user.UserRequest;
+import pl.grzegorz.financeapp.dto.user.UserResponse;
 import pl.grzegorz.financeapp.entity.User;
 import pl.grzegorz.financeapp.repository.UserRepository;
 
@@ -16,19 +18,30 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
-    public List<User> getAllUsers() {
-        return userRepository.findAll();
-    }
-
-    public Optional<User> getUserById(Long id) {
-        return userRepository.findById(id);
-    }
-
-    public User saveUser(User user) {
-        return userRepository.save(user);
-    }
-
     public void deleteUser(Long id) {
         userRepository.deleteById(id);
+    }
+
+    public UserResponse createUser(UserRequest request) {
+        User user = new User();
+        user.setUsername(request.username());
+        user.setEmail(request.email());
+        user.setPassword(request.password());
+        user.setRole("USER");
+
+        User saved = userRepository.save(user);
+        return new UserResponse(saved.getId(), saved.getUsername(), saved.getEmail(),saved.getCategories(),saved.getTransactions());
+    }
+
+    public List<UserResponse> getAllUsers() {
+        return userRepository.findAll()
+                .stream()
+                .map(u -> new UserResponse(u.getId(), u.getUsername(), u.getEmail(), u.getCategories(),u.getTransactions()))
+                .toList();
+    }
+
+    public Optional<UserResponse> getUser(Long id) {
+        return userRepository.findById(id)
+                .map(u -> new UserResponse(u.getId(), u.getUsername(), u.getEmail(), u.getCategories(),u.getTransactions()));
     }
 }
