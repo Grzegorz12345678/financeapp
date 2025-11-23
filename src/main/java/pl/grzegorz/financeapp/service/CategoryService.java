@@ -2,7 +2,7 @@ package pl.grzegorz.financeapp.service;
 
 import org.springframework.stereotype.Service;
 import pl.grzegorz.financeapp.CategoryType;
-import pl.grzegorz.financeapp.dto.CategoryRequest;
+import pl.grzegorz.financeapp.dto.category.CategoryRequest;
 import pl.grzegorz.financeapp.dto.category.CategoryResponse;
 import pl.grzegorz.financeapp.entity.Category;
 import pl.grzegorz.financeapp.entity.User;

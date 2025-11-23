@@ -1,11 +1,9 @@
 package pl.grzegorz.financeapp.controller;
 
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import pl.grzegorz.financeapp.dto.CategoryRequest;
+import pl.grzegorz.financeapp.dto.category.CategoryRequest;
 import pl.grzegorz.financeapp.dto.category.CategoryResponse;
-import pl.grzegorz.financeapp.entity.Category;
 import pl.grzegorz.financeapp.service.CategoryService;
 
 import java.util.List;
