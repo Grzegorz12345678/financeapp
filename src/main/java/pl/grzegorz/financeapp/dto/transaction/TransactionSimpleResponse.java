@@ -1,4 +1,4 @@
-package pl.grzegorz.financeapp.dto.user;
+package pl.grzegorz.financeapp.dto.transaction;
 
 import java.math.BigDecimal;
 

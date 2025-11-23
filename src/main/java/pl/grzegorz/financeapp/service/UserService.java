@@ -1,8 +1,8 @@
 package pl.grzegorz.financeapp.service;
 
 import org.springframework.stereotype.Service;
-import pl.grzegorz.financeapp.dto.user.CategorySimpleResponse;
-import pl.grzegorz.financeapp.dto.user.TransactionSimpleResponse;
+import pl.grzegorz.financeapp.dto.category.CategorySimpleResponse;
+import pl.grzegorz.financeapp.dto.transaction.TransactionSimpleResponse;
 import pl.grzegorz.financeapp.dto.user.UserRequest;
 import pl.grzegorz.financeapp.dto.user.UserResponse;
 import pl.grzegorz.financeapp.entity.User;
