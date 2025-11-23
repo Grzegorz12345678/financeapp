@@ -78,8 +78,27 @@ public class UserService {
     }
 
 
-//    public Optional<UserResponse> getUser(Long id) {
-//        return userRepository.findById(id)
-//                .map(u -> new UserResponse(u.getId(), u.getUsername(), u.getEmail(), u.getCategories(),u.getTransactions()));
-//    }
+    public Optional<UserResponse> getUser(Long id) {
+        return userRepository.findById(id)
+                .map(u -> new UserResponse(
+                        u.getId(),
+                        u.getUsername(),
+                        u.getEmail(),
+                        u.getCategories().stream()
+                                .map(c -> new CategorySimpleResponse(
+                                        c.getId(),
+                                        c.getName(),
+                                        c.getType().name()
+                                ))
+                                .toList(),
+                        u.getTransactions().stream()
+                                .map(t -> new TransactionSimpleResponse(
+                                        t.getId(),
+                                        t.getAmount(),
+                                        t.getDescription(),
+                                        t.getDate().toString()
+                                ))
+                                .toList()
+                ));
+    }
 }
