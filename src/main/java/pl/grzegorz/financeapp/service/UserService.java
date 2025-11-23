@@ -52,53 +52,35 @@ public class UserService {
     }
 
     public List<UserResponse> getAllUsers() {
-        return userRepository.findAll()
-                .stream()
-                .map(u -> new UserResponse(
-                        u.getId(),
-                        u.getUsername(),
-                        u.getEmail(),
-                        u.getCategories().stream()
-                                .map(c -> new CategorySimpleResponse(
-                                        c.getId(),
-                                        c.getName(),
-                                        c.getType().name()
-                                ))
-                                .toList(),
-                        u.getTransactions().stream()
-                                .map(t -> new TransactionSimpleResponse(
-                                        t.getId(),
-                                        t.getAmount(),
-                                        t.getDescription(),
-                                        t.getDate().toString()
-                                ))
-                                .toList()
-                ))
+        return userRepository.findAll().stream()
+                .map(this::toResponse)
                 .toList();
     }
 
-
     public Optional<UserResponse> getUser(Long id) {
         return userRepository.findById(id)
-                .map(u -> new UserResponse(
-                        u.getId(),
-                        u.getUsername(),
-                        u.getEmail(),
-                        u.getCategories().stream()
-                                .map(c -> new CategorySimpleResponse(
-                                        c.getId(),
-                                        c.getName(),
-                                        c.getType().name()
-                                ))
-                                .toList(),
-                        u.getTransactions().stream()
-                                .map(t -> new TransactionSimpleResponse(
-                                        t.getId(),
-                                        t.getAmount(),
-                                        t.getDescription(),
-                                        t.getDate().toString()
-                                ))
-                                .toList()
-                ));
+                .map(this::toResponse);
+    }
+
+    private UserResponse toResponse(User u) {
+        return new UserResponse(
+                u.getId(),
+                u.getUsername(),
+                u.getEmail(),
+                u.getCategories().stream()
+                        .map(c -> new CategorySimpleResponse(
+                                c.getId(),
+                                c.getName(),
+                                c.getType().name()))
+                        .toList(),
+                u.getTransactions().stream()
+                        .map(t -> new TransactionSimpleResponse(
+                                t.getId(),
+                                t.getAmount(),
+                                t.getDescription(),
+                                t.getDate().toString()
+                        ))
+                        .toList()
+        );
     }
 }
