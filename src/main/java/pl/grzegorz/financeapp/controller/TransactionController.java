@@ -2,6 +2,8 @@ package pl.grzegorz.financeapp.controller;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import pl.grzegorz.financeapp.dto.transaction.TransactionRequest;
+import pl.grzegorz.financeapp.dto.transaction.TransactionResponse;
 import pl.grzegorz.financeapp.entity.Transaction;
 import pl.grzegorz.financeapp.service.TransactionService;
 
@@ -12,55 +14,27 @@ import java.util.List;
 @RequestMapping("/api/transactions")
 public class TransactionController {
 
-    private final TransactionService transactionService;
+    private final TransactionService service;
 
-    public TransactionController(TransactionService transactionService) {
-        this.transactionService = transactionService;
-    }
-
-    @GetMapping
-    public List<Transaction> getAllTransactions() {
-        return transactionService.getAllTransactions();
-    }
-
-    @GetMapping("/{id}")
-    public ResponseEntity<Transaction> getTransactionById(@PathVariable Long id) {
-        return transactionService.getTransactionById(id)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+    public TransactionController(TransactionService service) {
+        this.service = service;
     }
 
     @PostMapping
-    public Transaction createTransaction(@RequestBody Transaction transaction) {
-        return transactionService.saveTransaction(transaction);
+    public TransactionResponse create(@RequestBody TransactionRequest req) {
+        return service.create(req);
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<Transaction> updateTransaction(@PathVariable Long id, @RequestBody Transaction transactionDetails) {
-        return transactionService.getTransactionById(id)
-                .map(transaction -> {
-                    transaction.setAmount(transactionDetails.getAmount());
-                    transaction.setDescription(transactionDetails.getDescription());
-                    transaction.setDate(transactionDetails.getDate());
-                    transaction.setCategory(transactionDetails.getCategory());
-                    transaction.setUser(transactionDetails.getUser());
-                    return ResponseEntity.ok(transactionService.saveTransaction(transaction));
-                })
+    @GetMapping
+    public List<TransactionResponse> getAll() {
+        return service.getAll();
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<TransactionResponse> getById(@PathVariable Long id) {
+        return service.getById(id)
+                .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
-
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteTransaction(@PathVariable Long id) {
-        transactionService.deleteTransaction(id);
-        return ResponseEntity.noContent().build();
-    }
-
-    @GetMapping("/user/{userId}")
-    public List<Transaction> getTransactionsByUser(
-            @PathVariable Long userId,
-            @RequestParam LocalDate startDate,
-            @RequestParam LocalDate endDate
-    ) {
-        return transactionService.getTransactionsByUserAndDateRange(userId, startDate, endDate);
-    }
 }
+
