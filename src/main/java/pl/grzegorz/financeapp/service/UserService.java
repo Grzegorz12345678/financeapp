@@ -1,6 +1,7 @@
 package pl.grzegorz.financeapp.service;
 
 import org.springframework.stereotype.Service;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import pl.grzegorz.financeapp.dto.category.CategorySimpleResponse;
 import pl.grzegorz.financeapp.dto.transaction.TransactionSimpleResponse;
 import pl.grzegorz.financeapp.dto.user.UserRequest;
@@ -15,9 +16,11 @@ import java.util.Optional;
 public class UserService {
 
     private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
 
-    public UserService(UserRepository userRepository) {
+    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     public void deleteUser(Long id) {
@@ -28,7 +31,7 @@ public class UserService {
         User user = new User();
         user.setUsername(request.username());
         user.setEmail(request.email());
-        user.setPassword(request.password());
+        user.setPassword(passwordEncoder.encode(request.password()));
         user.setRole("USER");
 
         User saved = userRepository.save(user);
