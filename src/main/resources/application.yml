@@ -23,7 +23,7 @@ spring:
       fail-on-empty-beans: false
 
 jwt:
-  secret: SUPER_TAJNY_KLUCZ_256BITOWY
+  secret: ${JWT_SECRET}
   expiration: 86400000 # 24h
 
 server:
