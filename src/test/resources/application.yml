@@ -1,0 +1,14 @@
+spring:
+  datasource:
+    url: jdbc:h2:mem:financeapp-testdb
+    driver-class-name: org.h2.Driver
+    username: sa
+    password:
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+
+jwt:
+  # Public test-only key; never used by the production application configuration.
+  secret: RmluYW5jZUFwcC1UZXN0LU9ubHktS2V5LUZvci1KV1QtSFMyNTYtMTIzNA==
+  expiration: 86400000
